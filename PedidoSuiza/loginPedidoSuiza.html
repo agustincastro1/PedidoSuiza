@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PedidoSuiza</title>
+    <link rel="stylesheet" href="estiloLoginPedidoSuiza.css">
+</head>
+
+<body>
+    <!-- 1. El mosaico desordenado basado en tu imagen (Bento Grid) -->
+    <div class="fondo-mosaico">
+        <img src="imagenes/almuerzo.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/images.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/facturas.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/donas.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/empanadasFritas.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/images.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/donas.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/facturas.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/empanadasFritas.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/images.jpg" alt="Comida" class="foto-bento">
+        <img src="imagenes/facturas.jpg" alt="Comida" class="foto-bento">
+
+    </div>
+
+    <!-- 2. Capa de color celeste semitransparente para que se lea el formulario -->
+    <div class="capa-filtro"></div>
+
+    <!-- 3. Contenedor principal que centra la tarjeta -->
+    <main class="contenedor-login">
+        <div class="loginPrincipal">
+            <h1>INICIAR SESIÓN</h1>
+            <form>
+                <div class="grupo-input">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" placeholder="Ingresá tu usuario">
+                </div>
+                <div class="grupo-input">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingresá tu contraseña">
+                </div>
+                <button type="submit" class="btn-ingresar">Ingresar</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
