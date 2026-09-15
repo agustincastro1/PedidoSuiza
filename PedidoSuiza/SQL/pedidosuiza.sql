@@ -132,6 +132,15 @@ CREATE TABLE `turnos` (
   `nombre_turno` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `turnos`
+--
+
+INSERT INTO `turnos` (`id_turno`, `nombre_turno`) VALUES
+(1, 'Mañana'),
+(2, 'Tarde'),
+(3, 'Noche');
+
 -- --------------------------------------------------------
 
 --
@@ -140,9 +149,20 @@ CREATE TABLE `turnos` (
 
 CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL,
-  `turno` int(11) NOT NULL,
   `nombre_usuario` varchar(255) NOT NULL,
+  `contrasenia` varchar(255) NOT NULL,
   `es_profesor` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario_turnos`
+--
+
+CREATE TABLE `usuario_turnos` (
+  `id_usuario` int(11) NOT NULL,
+  `id_turno` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -214,8 +234,14 @@ ALTER TABLE `turnos`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`),
-  ADD KEY `turno` (`turno`);
+  ADD PRIMARY KEY (`id_usuario`);
+
+--
+-- Indices de la tabla `usuario_turnos`
+--
+ALTER TABLE `usuario_turnos`
+  ADD PRIMARY KEY (`id_usuario`,`id_turno`),
+  ADD KEY `id_turno` (`id_turno`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -313,10 +339,11 @@ ALTER TABLE `reserva_computadoras`
   ADD CONSTRAINT `reserva_computadoras_ibfk_1` FOREIGN KEY (`id_profesor`) REFERENCES `profesor` (`id_profesor`);
 
 --
--- Filtros para la tabla `usuario`
+-- Filtros para la tabla `usuario_turnos`
 --
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`turno`) REFERENCES `turnos` (`id_turno`);
+ALTER TABLE `usuario_turnos`
+  ADD CONSTRAINT `usuario_turnos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `usuario_turnos_ibfk_2` FOREIGN KEY (`id_turno`) REFERENCES `turnos` (`id_turno`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
