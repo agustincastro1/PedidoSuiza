@@ -10,16 +10,12 @@
 
 <body>
 
-<header>
-    <div class="header">
-        <h1>PedidoSuiza</h1>
-        <a class="login" id="btn-login" href="login.php">iniciar sesion</a>
-        <div class="usuario-sesion" id="usuario-sesion" style="display: none;">
-            <span id="nombre-usuario"></span>
-            <button id="btn-cerrar-sesion" class="btn-cerrar-sesion">Cerrar sesión</button>
+    <header>
+        <div class="header">
+            <h1>PedidoSuiza</h1>
+            <a class="login" href="login.php">iniciar sesion</a>
         </div>
-    </div>
-</header>
+    </header>
     <main>
         <div class="contenido">
             <!-- El título ahora vive adentro del contenedor para alinearse perfecto -->
@@ -68,7 +64,6 @@
             </div>
         </div>
     </main>
-    <script src="../JS/login.js"></script>
 </body>
 
 </html>
