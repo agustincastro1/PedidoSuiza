@@ -71,6 +71,39 @@ body {
     letter-spacing: -0.5px;
 }
 
+.volver-inicio {
+    color: inherit;
+    text-decoration: none;
+}
+
+.usuario-sesion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.usuario-sesion span {
+    font-weight: 600;
+    color: #111;
+}
+
+.btn-cerrar-sesion {
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cerrar-sesion:hover {
+    background-color: black;
+    color: white;
+}
+
 .login {
     background-color: black;
     color: white;
@@ -152,11 +185,56 @@ body {
     grid-column: 1 / -1;
     text-align: center;
     font-size: 36px;
-    font-weight: 900; 
+    font-weight: 900;
     color: black;
     letter-spacing: 2px;
     margin-top: 10px;
     margin-bottom: 20px;
-    text-transform: uppercase; 
-    text-shadow: 3px 3px 0px white; 
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0px white;
+}
+
+/* ==========================================
+   FORMULARIO DE PEDIDO
+   ========================================== */
+#formPedido {
+    display: contents;
+}
+
+.info-producto .stock {
+    font-size: 13px;
+    color: #555;
+}
+
+.cantidad-producto {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid black;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.mensaje-error {
+    grid-column: 1 / -1;
+    color: #c0392b;
+    text-align: center;
+    font-size: 14px;
+}
+
+.btn-pedido {
+    grid-column: 1 / -1;
+    justify-self: center;
+    background-color: black;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-pedido:hover {
+    background-color: #333;
 }

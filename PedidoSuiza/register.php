@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 require_once __DIR__ . '/config/conexion.php';
 
@@ -54,6 +55,9 @@ foreach ($turnos as $idTurno) {
     mysqli_stmt_execute($insertarTurno);
 }
 mysqli_stmt_close($insertarTurno);
+
+$_SESSION['id_usuario'] = $idUsuario;
+$_SESSION['nombre_usuario'] = $nombreUsuario;
 
 echo json_encode(["exito" => "Usuario registrado correctamente"]);
 mysqli_close($conexion);

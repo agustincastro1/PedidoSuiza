@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+$imagenesFondo = [
+    '../imagenes/almuerzo.jpg',
+    '../imagenes/donas.jpg',
+    '../imagenes/empanadasFritas.jpg',
+    '../imagenes/facturas.jpg',
+    '../imagenes/images.jpg',
+];
+
+$mosaico = array_merge($imagenesFondo, $imagenesFondo, $imagenesFondo);
+shuffle($mosaico);
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -5,70 +19,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PedidoSuiza</title>
-    <link rel="stylesheet" href="../CSS/estiloPedidosSuiza.css">
+    <link rel="stylesheet" href="../CSS/estiloInicioPedidoSuiza.css">
 </head>
 
 <body>
 
-<header>
-    <div class="header">
-        <h1>PedidoSuiza</h1>
-        <a class="login" id="btn-login" href="login.php">iniciar sesion</a>
-        <div class="usuario-sesion" id="usuario-sesion" style="display: none;">
-            <span id="nombre-usuario"></span>
-            <button id="btn-cerrar-sesion" class="btn-cerrar-sesion">Cerrar sesión</button>
-        </div>
+    <div class="fondo-mosaico-inicio">
+        <?php foreach ($mosaico as $imagen): ?>
+            <img src="<?= htmlspecialchars($imagen) ?>" alt="" class="foto-mosaico">
+        <?php endforeach; ?>
     </div>
-</header>
-    <main>
-        <div class="contenido">
-            <!-- El título ahora vive adentro del contenedor para alinearse perfecto -->
-            <h1 class="titulo-seccion">COMIDA</h1>
-            <!-- Producto 1 -->
-            <div class="tarjeta-producto">
-                <img src="../imagenes/images.jpg" alt="Churros" class="comida">
-                <div class="info-producto">
-                    <h3>Churros Caseros</h3>
-                    <p class="precio">$???</p>
-                </div>
-            </div>
+    <div class="capa-filtro-inicio"></div>
 
-            <!-- Producto 2 -->
-            <div class="tarjeta-producto">
-                <img src="../imagenes/donas.jpg" alt="Donas" class="comida">
-                <div class="info-producto">
-                    <h3>Donas</h3>
-                    <p class="precio">$???</p>
-                </div>
+    <header class="header-inicio">
+        <h1>PedidoSuiza</h1>
+        <?php if (isset($_SESSION['id_usuario'])): ?>
+            <div class="usuario-sesion">
+                <span><?= htmlspecialchars($_SESSION['nombre_usuario']) ?></span>
+                <form action="../logout.php" method="post">
+                    <button type="submit" class="btn-cerrar-sesion">Cerrar sesión</button>
+                </form>
             </div>
+        <?php else: ?>
+            <a class="login" href="login.php">iniciar sesion</a>
+        <?php endif; ?>
+    </header>
 
-            <!-- Producto 3 -->
-            <div class="tarjeta-producto">
-                <img src="../imagenes/facturas.jpg" alt="Facturas" class="comida">
-                <div class="info-producto">
-                    <h3>Facturas</h3>
-                    <p class="precio">$???</p>
-                </div>
-            </div>
-
-            <!-- Producto 4 -->
-            <div class="tarjeta-producto">
-                <img src="../imagenes/empanadasFritas.jpg" alt="Empanadas Fritas" class="comida">
-                <div class="info-producto">
-                    <h3>Empanadas Fritas</h3>
-                    <p class="precio">$???</p>
-                </div>
-            </div>
-            <div class="tarjeta-producto">
-                <img src="../imagenes/almuerzo.jpg" alt="Donas" class="comida">
-                <div class="info-producto">
-                    <h3>Milanesa con arroz</h3>
-                    <p class="precio">$???</p>
-                </div>
-            </div>
+    <main class="hero-inicio">
+        <div class="hero-contenido">
+            <h2>Pedí tu comida sin hacer fila</h2>
+            <p>Elegí lo que querés comer y pasá a retirarlo cuando esté listo.</p>
+            <a class="btn-hero" href="hacerPedido.php">Hacer pedido</a>
         </div>
     </main>
-    <script src="../JS/login.js"></script>
 </body>
 
 </html>

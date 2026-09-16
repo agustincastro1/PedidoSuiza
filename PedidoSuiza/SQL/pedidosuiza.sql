@@ -65,9 +65,21 @@ CREATE TABLE `detalle_reserva_comp` (
 CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL,
   `cantidad_producto` int(11) NOT NULL DEFAULT 0,
+  `precio` decimal(10,2) NOT NULL DEFAULT 0.00,
   `nombre_producto` varchar(255) NOT NULL,
   `tipo_producto` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id_producto`, `cantidad_producto`, `precio`, `nombre_producto`, `tipo_producto`) VALUES
+(1, 20, 1000.00, 'Churros Caseros', 'dulce'),
+(2, 20, 1000.00, 'Donas', 'dulce'),
+(3, 20, 1000.00, 'Facturas', 'dulce'),
+(4, 20, 2500.00, 'Empanadas Fritas', 'salado'),
+(5, 15, 6000.00, 'Milanesa con arroz', 'almuerzo');
 
 -- --------------------------------------------------------
 
@@ -78,6 +90,8 @@ CREATE TABLE `productos` (
 CREATE TABLE `productos_reservados` (
   `id_reserva_buffet` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
+  `nombre_producto` varchar(255) NOT NULL DEFAULT '',
+  `precio_total` decimal(10,2) NOT NULL DEFAULT 0.00,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -101,10 +115,12 @@ CREATE TABLE `profesor` (
 
 CREATE TABLE `reserva_buffet` (
   `id_reserva_buffet` int(11) NOT NULL,
-  `id_alumno` int(11) NOT NULL,
-  `id_profesor` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_alumno` int(11) DEFAULT NULL,
+  `id_profesor` int(11) DEFAULT NULL,
   `horario_reserva` datetime NOT NULL,
-  `estado_reserva_buffet` varchar(50) NOT NULL
+  `estado_reserva_buffet` varchar(50) NOT NULL,
+  `total` decimal(10,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -214,6 +230,7 @@ ALTER TABLE `profesor`
 --
 ALTER TABLE `reserva_buffet`
   ADD PRIMARY KEY (`id_reserva_buffet`),
+  ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `id_alumno` (`id_alumno`),
   ADD KEY `id_profesor` (`id_profesor`);
 
@@ -263,7 +280,7 @@ ALTER TABLE `computadoras`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `profesor`
@@ -330,7 +347,8 @@ ALTER TABLE `profesor`
 --
 ALTER TABLE `reserva_buffet`
   ADD CONSTRAINT `reserva_buffet_ibfk_1` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id_alumno`),
-  ADD CONSTRAINT `reserva_buffet_ibfk_2` FOREIGN KEY (`id_profesor`) REFERENCES `profesor` (`id_profesor`);
+  ADD CONSTRAINT `reserva_buffet_ibfk_2` FOREIGN KEY (`id_profesor`) REFERENCES `profesor` (`id_profesor`),
+  ADD CONSTRAINT `reserva_buffet_ibfk_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `reserva_computadoras`

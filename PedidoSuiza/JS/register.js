@@ -45,8 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (resultado.error) {
                 mensaje.textContent = resultado.error;
             } else {
-                mensaje.textContent = resultado.exito;
-                formulario.reset();
+                window.location.href = 'pedidos.php';
             }
         } catch (error) {
             mensaje.textContent = 'Error al conectar con el servidor';

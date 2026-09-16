@@ -22,6 +22,7 @@
         <img src="../imagenes/empanadasFritas.jpg" alt="Comida" class="foto-bento">
         <img src="../imagenes/images.jpg" alt="Comida" class="foto-bento">
         <img src="../imagenes/facturas.jpg" alt="Comida" class="foto-bento">
+
     </div>
 
     <!-- 2. Capa de color celeste semitransparente para que se lea el formulario -->
@@ -31,7 +32,7 @@
     <main class="contenedor-login">
         <div class="loginPrincipal">
             <h1>INICIAR SESIÓN</h1>
-            <form>
+            <form id="formLogin">
                 <div class="grupo-input">
                     <label for="usuario">Usuario</label>
                     <input type="text" id="usuario" placeholder="Ingresá tu usuario">
@@ -40,11 +41,13 @@
                     <label for="password">Contraseña</label>
                     <input type="password" id="password" placeholder="Ingresá tu contraseña">
                 </div>
+                <p id="mensajeLogin" class="mensaje-error"></p>
                 <button type="submit" class="btn-ingresar">Ingresar</button>
             </form>
             <p style="text-align:center; margin-top:18px; font-size:14px;">¿No tenés cuenta? <a href="registro.php">Registrate</a></p>
         </div>
     </main>
+
     <script src="../JS/login.js"></script>
 </body>
 
