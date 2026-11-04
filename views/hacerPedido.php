@@ -48,6 +48,27 @@ $resultadoProductos = mysqli_query($conexion, "SELECT id_producto, nombre_produc
 while ($fila = mysqli_fetch_assoc($resultadoProductos)) {
     $productos[] = $fila;
 }
+
+$facturas = [];
+if (isset($_SESSION['id_usuario'])) {
+    $consultaFacturas = mysqli_prepare($conexion, "SELECT r.id_reserva_buffet, r.horario_reserva, r.total, p.nombre_producto, p.cantidad, p.precio_total FROM reserva_buffet r JOIN productos_reservados p ON p.id_reserva_buffet = r.id_reserva_buffet WHERE r.id_usuario = ? ORDER BY r.id_reserva_buffet DESC");
+    mysqli_stmt_bind_param($consultaFacturas, "i", $_SESSION['id_usuario']);
+    mysqli_stmt_execute($consultaFacturas);
+    $resultadoFacturas = mysqli_stmt_get_result($consultaFacturas);
+    while ($fila = mysqli_fetch_assoc($resultadoFacturas)) {
+        $idFactura = $fila['id_reserva_buffet'];
+        $facturas[$idFactura]['id'] = $idFactura;
+        $facturas[$idFactura]['horario'] = $fila['horario_reserva'];
+        $facturas[$idFactura]['total'] = $fila['total'];
+        $facturas[$idFactura]['items'][] = $fila;
+    }
+    mysqli_stmt_close($consultaFacturas);
+}
+
+function formatearPrecio($valor)
+{
+    return '$' . number_format((float) $valor, 0, ',', '.');
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -76,7 +97,7 @@ while ($fila = mysqli_fetch_assoc($resultadoProductos)) {
             <?php endif; ?>
         </div>
     </header>
-    <main>
+    <main class="<?= isset($_SESSION['id_usuario']) ? 'pagina-pedido' : '' ?>">
         <div class="contenido">
             <!-- El título ahora vive adentro del contenedor para alinearse perfecto -->
             <h1 class="titulo-seccion">Buffet</h1>
@@ -106,6 +127,8 @@ while ($fila = mysqli_fetch_assoc($resultadoProductos)) {
                                     type="number"
                                     class="cantidad-producto"
                                     data-id-producto="<?= (int) $producto['id_producto'] ?>"
+                                    data-nombre="<?= htmlspecialchars($nombre) ?>"
+                                    data-precio="<?= (float) $producto['precio'] ?>"
                                     min="0"
                                     max="<?= $stock ?>"
                                     value="0"
@@ -121,6 +144,45 @@ while ($fila = mysqli_fetch_assoc($resultadoProductos)) {
                 <?php endif; ?>
             </form>
         </div>
+
+        <?php if (isset($_SESSION['id_usuario'])): ?>
+            <aside class="panel-reservas">
+                <div id="pedidoActual" class="factura-bloque factura-en-curso" hidden>
+                    <h2>Tu pedido</h2>
+                    <p class="factura-dato">Todavía no está confirmado</p>
+                    <div id="itemsPedidoActual"></div>
+                    <div class="factura-total">
+                        <span>Total</span>
+                        <span id="totalPedidoActual"></span>
+                    </div>
+                </div>
+
+                <h2>Mis facturas</h2>
+                <?php if (count($facturas) === 0): ?>
+                    <p class="sin-reservas">Todavía no hiciste ningún pedido. Elegí productos para ver el detalle acá.</p>
+                <?php endif; ?>
+
+                <?php foreach ($facturas as $factura): ?>
+                    <div class="factura-bloque">
+                        <p class="factura-numero">Pedido N° <?= (int) $factura['id'] ?></p>
+                        <p class="factura-dato"><?= htmlspecialchars(date('d/m/Y H:i', strtotime($factura['horario']))) ?></p>
+                        <?php foreach ($factura['items'] as $item): ?>
+                            <div class="factura-item">
+                                <div>
+                                    <h3><?= htmlspecialchars($item['nombre_producto']) ?></h3>
+                                    <p><?= (int) $item['cantidad'] ?> × <?= formatearPrecio($item['precio_total'] / $item['cantidad']) ?></p>
+                                </div>
+                                <span class="factura-subtotal"><?= formatearPrecio($item['precio_total']) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                        <div class="factura-total">
+                            <span>Total</span>
+                            <span><?= formatearPrecio($factura['total']) ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </aside>
+        <?php endif; ?>
     </main>
 
     <script src="../JS/pedido.js"></script>
