@@ -79,7 +79,7 @@ while ($fila = mysqli_fetch_assoc($resultadoProductos)) {
     <main>
         <div class="contenido">
             <!-- El título ahora vive adentro del contenedor para alinearse perfecto -->
-            <h1 class="titulo-seccion">COMIDA</h1>
+            <h1 class="titulo-seccion">Buffet</h1>
 
             <?php if (!isset($_SESSION['id_usuario'])): ?>
                 <p class="mensaje-error">Iniciá sesión para poder hacer un pedido.</p>
