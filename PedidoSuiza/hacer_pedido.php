@@ -26,54 +26,64 @@ if (count($pedido) === 0) {
     exit;
 }
 
-mysqli_begin_transaction($conexion);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+ksort($pedido);
 
-$consultaStock = mysqli_prepare($conexion, "SELECT nombre_producto, cantidad_producto, precio FROM productos WHERE id_producto = ? FOR UPDATE");
-$detalles = [];
-$total = 0;
+try {
+    mysqli_begin_transaction($conexion);
 
-foreach ($pedido as $idProducto => $cantidad) {
-    mysqli_stmt_bind_param($consultaStock, "i", $idProducto);
-    mysqli_stmt_execute($consultaStock);
-    $producto = mysqli_stmt_get_result($consultaStock)->fetch_assoc();
+    $consultaStock = mysqli_prepare($conexion, "SELECT nombre_producto, cantidad_producto, precio FROM productos WHERE id_producto = ? FOR UPDATE");
+    $detalles = [];
+    $total = 0;
 
-    if (!$producto || $producto['cantidad_producto'] < $cantidad) {
-        mysqli_rollback($conexion);
-        $nombre = $producto['nombre_producto'] ?? 'un producto';
-        echo json_encode(["error" => "No hay stock suficiente de $nombre"]);
-        exit;
+    foreach ($pedido as $idProducto => $cantidad) {
+        mysqli_stmt_bind_param($consultaStock, "i", $idProducto);
+        mysqli_stmt_execute($consultaStock);
+        $producto = mysqli_stmt_get_result($consultaStock)->fetch_assoc();
+
+        if (!$producto || $producto['cantidad_producto'] < $cantidad) {
+            mysqli_rollback($conexion);
+            $nombre = $producto['nombre_producto'] ?? 'un producto';
+            echo json_encode(["error" => "No hay stock suficiente de $nombre"]);
+            exit;
+        }
+
+        $precioTotal = $producto['precio'] * $cantidad;
+        $detalles[$idProducto] = [
+            'nombre' => $producto['nombre_producto'],
+            'precio_total' => $precioTotal,
+            'cantidad' => $cantidad,
+        ];
+        $total += $precioTotal;
     }
+    mysqli_stmt_close($consultaStock);
 
-    $precioTotal = $producto['precio'] * $cantidad;
-    $detalles[$idProducto] = [
-        'nombre' => $producto['nombre_producto'],
-        'precio_total' => $precioTotal,
-        'cantidad' => $cantidad,
-    ];
-    $total += $precioTotal;
+    $insertarReserva = mysqli_prepare($conexion, "INSERT INTO reserva_buffet (id_usuario, horario_reserva, estado_reserva_buffet, total) VALUES (?, NOW(), 'pendiente', ?)");
+    mysqli_stmt_bind_param($insertarReserva, "id", $idUsuario, $total);
+    mysqli_stmt_execute($insertarReserva);
+    $idReserva = mysqli_insert_id($conexion);
+    mysqli_stmt_close($insertarReserva);
+
+    $insertarDetalle = mysqli_prepare($conexion, "INSERT INTO productos_reservados (id_reserva_buffet, id_producto, nombre_producto, precio_total, cantidad) VALUES (?, ?, ?, ?, ?)");
+    $descontarStock = mysqli_prepare($conexion, "UPDATE productos SET cantidad_producto = cantidad_producto - ? WHERE id_producto = ?");
+
+    foreach ($detalles as $idProducto => $detalle) {
+        mysqli_stmt_bind_param($insertarDetalle, "iisdi", $idReserva, $idProducto, $detalle['nombre'], $detalle['precio_total'], $detalle['cantidad']);
+        mysqli_stmt_execute($insertarDetalle);
+
+        mysqli_stmt_bind_param($descontarStock, "ii", $detalle['cantidad'], $idProducto);
+        mysqli_stmt_execute($descontarStock);
+    }
+    mysqli_stmt_close($insertarDetalle);
+    mysqli_stmt_close($descontarStock);
+
+    mysqli_commit($conexion);
+} catch (mysqli_sql_exception $e) {
+    mysqli_rollback($conexion);
+    error_log($e->getMessage());
+    echo json_encode(["error" => "No se pudo realizar el pedido, probá de nuevo"]);
+    exit;
 }
-mysqli_stmt_close($consultaStock);
-
-$insertarReserva = mysqli_prepare($conexion, "INSERT INTO reserva_buffet (id_usuario, horario_reserva, estado_reserva_buffet, total) VALUES (?, NOW(), 'pendiente', ?)");
-mysqli_stmt_bind_param($insertarReserva, "id", $idUsuario, $total);
-mysqli_stmt_execute($insertarReserva);
-$idReserva = mysqli_insert_id($conexion);
-mysqli_stmt_close($insertarReserva);
-
-$insertarDetalle = mysqli_prepare($conexion, "INSERT INTO productos_reservados (id_reserva_buffet, id_producto, nombre_producto, precio_total, cantidad) VALUES (?, ?, ?, ?, ?)");
-$descontarStock = mysqli_prepare($conexion, "UPDATE productos SET cantidad_producto = cantidad_producto - ? WHERE id_producto = ?");
-
-foreach ($detalles as $idProducto => $detalle) {
-    mysqli_stmt_bind_param($insertarDetalle, "iisdi", $idReserva, $idProducto, $detalle['nombre'], $detalle['precio_total'], $detalle['cantidad']);
-    mysqli_stmt_execute($insertarDetalle);
-
-    mysqli_stmt_bind_param($descontarStock, "ii", $detalle['cantidad'], $idProducto);
-    mysqli_stmt_execute($descontarStock);
-}
-mysqli_stmt_close($insertarDetalle);
-mysqli_stmt_close($descontarStock);
-
-mysqli_commit($conexion);
 
 echo json_encode(["exito" => "Pedido realizado correctamente"]);
 mysqli_close($conexion);

@@ -49,7 +49,12 @@ shuffle($mosaico);
         <div class="hero-contenido">
             <h2>Pedí tu comida sin hacer fila</h2>
             <p>Elegí lo que querés comer y pasá a retirarlo cuando esté listo.</p>
-            <a class="btn-hero" href="hacerPedido.php">Hacer pedido</a>
+            <div class="hero-acciones">
+                <a class="btn-hero" href="hacerPedido.php">Hacer pedido</a>
+                <?php if (!empty($_SESSION['es_profesor'])): ?>
+                    <a class="btn-hero" href="reservarComputadoras.php">Reservar computadoras</a>
+                <?php endif; ?>
+            </div>
         </div>
     </main>
 </body>

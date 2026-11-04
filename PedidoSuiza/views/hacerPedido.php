@@ -10,6 +10,39 @@ $imagenesProducto = [
     'Milanesa con arroz' => '../imagenes/almuerzo.jpg',
 ];
 
+$productosNuevos = [
+    ['Agua', 20, 500, 'bebida', 'agua.jpg'],
+    ['Alfajor', 20, 1000, 'dulce', 'alfajor.jpg'],
+    ['Chocotorta', 20, 2500, 'dulce', 'chocotorta.jpg'],
+    ['Coca-Cola', 20, 1500, 'bebida', 'cocacola.jpg'],
+    ['Fideos', 20, 4500, 'almuerzo', 'fideos.jpg'],
+    ['Hamburguesa', 20, 5000, 'salado', 'hamburguesa.jpg'],
+    ['Milanesa napolitana', 20, 7000, 'almuerzo', 'milanesaNapo.jpg'],
+    ['Pepsi', 20, 1500, 'bebida', 'pepsi.jpg'],
+    ['Pizza', 20, 5000, 'salado', 'pizza.jpg'],
+    ['Tacos', 20, 4500, 'salado', 'tacos.jpg'],
+];
+
+$nombresProductos = [];
+$resultadoNombres = mysqli_query($conexion, "SELECT nombre_producto FROM productos");
+while ($fila = mysqli_fetch_assoc($resultadoNombres)) {
+    $nombresProductos[$fila['nombre_producto']] = true;
+}
+
+$insertarProducto = mysqli_prepare(
+    $conexion,
+    "INSERT INTO productos (cantidad_producto, precio, nombre_producto, tipo_producto) VALUES (?, ?, ?, ?)"
+);
+foreach ($productosNuevos as [$nombre, $stock, $precio, $tipo, $archivoImagen]) {
+    $imagenesProducto[$nombre] = '../imagenes/' . $archivoImagen;
+    if (!isset($nombresProductos[$nombre])) {
+        mysqli_stmt_bind_param($insertarProducto, "idss", $stock, $precio, $nombre, $tipo);
+        mysqli_stmt_execute($insertarProducto);
+        $nombresProductos[$nombre] = true;
+    }
+}
+mysqli_stmt_close($insertarProducto);
+
 $productos = [];
 $resultadoProductos = mysqli_query($conexion, "SELECT id_producto, nombre_producto, cantidad_producto, precio FROM productos ORDER BY id_producto");
 while ($fila = mysqli_fetch_assoc($resultadoProductos)) {
@@ -56,8 +89,11 @@ while ($fila = mysqli_fetch_assoc($resultadoProductos)) {
                 <?php foreach ($productos as $producto): ?>
                     <?php
                         $nombre = $producto['nombre_producto'];
+                        if (!isset($imagenesProducto[$nombre])) {
+                            continue;
+                        }
                         $stock = (int) $producto['cantidad_producto'];
-                        $imagen = $imagenesProducto[$nombre] ?? '../imagenes/images.jpg';
+                        $imagen = $imagenesProducto[$nombre];
                     ?>
                     <div class="tarjeta-producto">
                         <img src="<?= htmlspecialchars($imagen) ?>" alt="<?= htmlspecialchars($nombre) ?>" class="comida">

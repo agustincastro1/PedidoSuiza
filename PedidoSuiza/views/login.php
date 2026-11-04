@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PedidoSuiza</title>
-    <link rel="stylesheet" href="../CSS/estiloLoginPedidoSuiza.css">
+    <link rel="stylesheet" href="../CSS/estiloLoginPedidoSuiza.css?v=2">
 </head>
 
 <body>
@@ -25,8 +25,12 @@
 
     </div>
 
-    <!-- 2. Capa de color celeste semitransparente para que se lea el formulario -->
+    <!-- 2. Capa de color semitransparente para que se lea el formulario -->
     <div class="capa-filtro"></div>
+
+    <form class="form-volver" action="pedidos.php" method="get">
+        <button type="submit" class="btn-volver">← Volver al inicio</button>
+    </form>
 
     <!-- 3. Contenedor principal que centra la tarjeta -->
     <main class="contenedor-login">

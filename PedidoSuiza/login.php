@@ -13,7 +13,7 @@ if ($nombreUsuario === '' || $contrasena === '') {
     exit;
 }
 
-$consulta = mysqli_prepare($conexion, "SELECT id_usuario, nombre_usuario, contrasenia FROM usuario WHERE nombre_usuario = ?");
+$consulta = mysqli_prepare($conexion, "SELECT id_usuario, nombre_usuario, contrasenia, es_profesor FROM usuario WHERE nombre_usuario = ?");
 mysqli_stmt_bind_param($consulta, "s", $nombreUsuario);
 mysqli_stmt_execute($consulta);
 $resultado = mysqli_stmt_get_result($consulta);
@@ -27,6 +27,7 @@ if (!$usuario || $usuario['contrasenia'] !== $contrasena) {
 
 $_SESSION['id_usuario'] = $usuario['id_usuario'];
 $_SESSION['nombre_usuario'] = $usuario['nombre_usuario'];
+$_SESSION['es_profesor'] = (bool)$usuario['es_profesor'];
 
 echo json_encode(["exito" => "Inicio de sesión correcto"]);
 mysqli_close($conexion);

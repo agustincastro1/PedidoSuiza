@@ -41,6 +41,10 @@
                     <label for="confirmarPassword">Confirmar contraseña</label>
                     <input type="password" id="confirmarPassword" placeholder="Repetí tu contraseña">
                 </div>
+                <div class="grupo-input">
+                    <label for="codigoDocente">Código docente (solo profesores)</label>
+                    <input type="password" id="codigoDocente" placeholder="Si sos alumno, dejalo vacío" autocomplete="off">
+                </div>
                 <div class="grupo-turnos">
                     <span>Turno (podés elegir más de uno)</span>
                     <div class="opciones-turno">

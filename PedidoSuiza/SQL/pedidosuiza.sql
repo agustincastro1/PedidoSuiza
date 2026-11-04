@@ -37,6 +37,24 @@ CREATE TABLE `alumno` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `codigo_docente`
+--
+
+CREATE TABLE `codigo_docente` (
+  `id_codigo` int(11) NOT NULL,
+  `codigo` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `codigo_docente`
+--
+
+INSERT INTO `codigo_docente` (`id_codigo`, `codigo`) VALUES
+(1, '1234');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `computadoras`
 --
 
@@ -44,6 +62,15 @@ CREATE TABLE `computadoras` (
   `id_computadora` int(11) NOT NULL,
   `computadoras_disp` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Volcado de datos para la tabla `computadoras`
+--
+
+INSERT INTO `computadoras` (`id_computadora`, `computadoras_disp`) VALUES
+(1, 200);
 
 -- --------------------------------------------------------
 
@@ -79,7 +106,17 @@ INSERT INTO `productos` (`id_producto`, `cantidad_producto`, `precio`, `nombre_p
 (2, 20, 1000.00, 'Donas', 'dulce'),
 (3, 20, 1000.00, 'Facturas', 'dulce'),
 (4, 20, 2500.00, 'Empanadas Fritas', 'salado'),
-(5, 15, 6000.00, 'Milanesa con arroz', 'almuerzo');
+(5, 15, 6000.00, 'Milanesa con arroz', 'almuerzo'),
+(6, 20, 500.00, 'Agua', 'bebida'),
+(7, 20, 1000.00, 'Alfajor', 'dulce'),
+(8, 20, 2500.00, 'Chocotorta', 'dulce'),
+(9, 20, 1500.00, 'Coca-Cola', 'bebida'),
+(10, 20, 4500.00, 'Fideos', 'almuerzo'),
+(11, 20, 5000.00, 'Hamburguesa', 'salado'),
+(12, 20, 7000.00, 'Milanesa napolitana', 'almuerzo'),
+(13, 20, 1500.00, 'Pepsi', 'bebida'),
+(14, 20, 5000.00, 'Pizza', 'salado'),
+(15, 20, 4500.00, 'Tacos', 'salado');
 
 -- --------------------------------------------------------
 
@@ -133,6 +170,7 @@ CREATE TABLE `reserva_computadoras` (
   `id_reserva_comp` int(11) NOT NULL,
   `id_profesor` int(11) NOT NULL,
   `cant_reservada` int(11) NOT NULL,
+  `aula` varchar(50) NOT NULL,
   `horario_reserva` datetime NOT NULL,
   `estado_reserva_computadoras` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -191,6 +229,12 @@ CREATE TABLE `usuario_turnos` (
 ALTER TABLE `alumno`
   ADD PRIMARY KEY (`id_alumno`),
   ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `codigo_docente`
+--
+ALTER TABLE `codigo_docente`
+  ADD PRIMARY KEY (`id_codigo`);
 
 --
 -- Indices de la tabla `computadoras`
@@ -271,10 +315,16 @@ ALTER TABLE `alumno`
   MODIFY `id_alumno` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `codigo_docente`
+--
+ALTER TABLE `codigo_docente`
+  MODIFY `id_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `computadoras`
 --
 ALTER TABLE `computadoras`
-  MODIFY `id_computadora` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_computadora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`

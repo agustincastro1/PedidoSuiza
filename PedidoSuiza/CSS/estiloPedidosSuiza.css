@@ -38,6 +38,20 @@ h1 {
     object-fit: cover;
 } */
 
+:root {
+    color-scheme: dark;
+    --fondo: #2a2229;
+    --superficie: #3a2e36;
+    --borde: #5c4c57;
+    --texto: #eee6e0;
+    --texto-suave: #c3b6b0;
+    --acento: #8e2f45;
+    --acento-hover: #a63a54;
+    --texto-acento: #f7eeea;
+    --error: #ff9c8f;
+    --enlace: #e8a0ad;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -46,16 +60,16 @@ h1 {
 }
 
 body {
-    background-color: rgb(160, 232, 250); 
+    background-color: var(--fondo);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 .header {
     width: 100%;
-    background-color: white;
+    background-color: var(--superficie);
     padding: 15px 40px;
-    border-bottom: 3px solid black;
+    border-bottom: 1px solid var(--borde);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -67,7 +81,7 @@ body {
 .header h1 {
     font-size: 26px;
     font-weight: 800;
-    color: black;
+    color: var(--texto);
     letter-spacing: -0.5px;
 }
 
@@ -84,13 +98,13 @@ body {
 
 .usuario-sesion span {
     font-weight: 600;
-    color: #111;
+    color: var(--texto);
 }
 
 .btn-cerrar-sesion {
     background-color: transparent;
-    color: black;
-    border: 2px solid black;
+    color: var(--texto);
+    border: 1px solid var(--borde);
     padding: 8px 16px;
     border-radius: 6px;
     font-weight: bold;
@@ -100,13 +114,13 @@ body {
 }
 
 .btn-cerrar-sesion:hover {
-    background-color: black;
-    color: white;
+    background-color: var(--acento);
+    color: var(--texto-acento);
 }
 
 .login {
-    background-color: black;
-    color: white;
+    background-color: var(--acento);
+    color: var(--texto-acento);
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
@@ -117,7 +131,7 @@ body {
 }
 
 .login:hover {
-    background-color: #333;
+    background-color: var(--acento-hover);
     transform: translateY(-2px);
 }
 
@@ -135,11 +149,11 @@ body {
    4. TARJETAS DE COMIDA (CARDS)
    ========================================== */
 .tarjeta-producto {
-    background-color: white;
-    border: 3px solid black;
+    background-color: var(--superficie);
+    border: 1px solid var(--borde);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 6px 0px rgba(0, 0, 0, 1);
+    box-shadow: none;
     transition: transform 0.2s ease;
     display: flex;
     flex-direction: column;
@@ -147,7 +161,7 @@ body {
 
 /* Efecto al pasar el mouse por la tarjeta */
 .tarjeta-producto:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
 }
 
 /* Ajuste profesional de las imágenes */
@@ -155,7 +169,7 @@ body {
     width: 100%;
     height: 200px; /* Altura idéntica para todas las fotos */
     object-fit: cover; /* Recorta la imagen al centro para que no se estire feo */
-    border-bottom: 3px solid black;
+    border-bottom: 1px solid var(--borde);
 }
 
 /* Texto interno de las tarjetas */
@@ -164,18 +178,18 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background-color: white;
+    background-color: var(--superficie);
 }
 
 .info-producto h3 {
     font-size: 18px;
-    color: #111;
+    color: var(--texto);
     font-weight: 700;
 }
 
 .info-producto .precio {
     font-size: 16px;
-    color: #000;
+    color: var(--texto);
     font-weight: 800;
 }
 /* ==========================================
@@ -184,14 +198,13 @@ body {
 .titulo-seccion {
     grid-column: 1 / -1;
     text-align: center;
-    font-size: 36px;
-    font-weight: 900;
-    color: black;
-    letter-spacing: 2px;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--texto);
+    letter-spacing: 1px;
     margin-top: 10px;
     margin-bottom: 20px;
     text-transform: uppercase;
-    text-shadow: 3px 3px 0px white;
 }
 
 /* ==========================================
@@ -203,20 +216,22 @@ body {
 
 .info-producto .stock {
     font-size: 13px;
-    color: #555;
+    color: var(--texto-suave);
 }
 
 .cantidad-producto {
     width: 100%;
     padding: 8px;
-    border: 2px solid black;
+    border: 1px solid var(--borde);
     border-radius: 6px;
     font-size: 15px;
+    background-color: var(--fondo);
+    color: var(--texto);
 }
 
 .mensaje-error {
     grid-column: 1 / -1;
-    color: #c0392b;
+    color: var(--error);
     text-align: center;
     font-size: 14px;
 }
@@ -224,8 +239,8 @@ body {
 .btn-pedido {
     grid-column: 1 / -1;
     justify-self: center;
-    background-color: black;
-    color: white;
+    background-color: var(--acento);
+    color: var(--texto-acento);
     padding: 12px 30px;
     border: none;
     border-radius: 6px;
@@ -235,6 +250,140 @@ body {
     transition: background-color 0.2s;
 }
 
-.btn-pedido:hover {
-    background-color: #333;
+.btn-pedido:disabled {
+    background-color: var(--borde);
+    color: var(--texto-suave);
+    cursor: not-allowed;
+}
+
+.btn-pedido:hover:not(:disabled) {
+    background-color: var(--acento-hover);
+}
+
+/* ==========================================
+   RESERVA DE COMPUTADORAS
+   ========================================== */
+.pagina-computadoras {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+}
+
+.reserva-principal {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.reserva-principal .titulo-seccion {
+    margin-bottom: 8px;
+}
+
+.disponibles {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 28px;
+}
+
+#formComputadoras {
+    display: flex;
+    flex-direction: column;
+}
+
+#formComputadoras label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--texto);
+    margin-bottom: 6px;
+}
+
+#formComputadoras .cantidad-producto {
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+#formComputadoras .mensaje-error {
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+#formComputadoras .mensaje-error:empty {
+    display: none;
+}
+
+#formComputadoras .btn-pedido {
+    width: 100%;
+}
+
+.panel-reservas {
+    background-color: var(--superficie);
+    border-left: 1px solid var(--borde);
+    padding: 30px 24px;
+    position: sticky;
+    top: 69px;
+    height: calc(100vh - 69px);
+    overflow-y: auto;
+}
+
+.panel-reservas h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--texto);
+    margin-bottom: 8px;
+}
+
+.item-reserva {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--borde);
+}
+
+.item-reserva:last-child {
+    border-bottom: none;
+}
+
+.item-reserva h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--texto);
+    margin-bottom: 4px;
+}
+
+.item-reserva p {
+    font-size: 14px;
+    color: var(--texto-suave);
+    overflow-wrap: anywhere;
+}
+
+.item-reserva .btn-devolver {
+    margin-top: 10px;
+    padding: 6px 14px;
+}
+
+.item-reserva .reserva-devuelta {
+    margin-top: 8px;
+    font-weight: 600;
+    color: var(--texto-suave);
+}
+
+.sin-reservas {
+    font-size: 14px;
+    color: var(--texto-suave);
+    padding-top: 8px;
+}
+
+@media (max-width: 800px) {
+    .pagina-computadoras {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .panel-reservas {
+        position: static;
+        height: auto;
+        border-left: none;
+        border-top: 1px solid var(--borde);
+    }
 }

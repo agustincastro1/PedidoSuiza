@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nombreUsuario = document.getElementById('usuario').value.trim();
         const contrasena = document.getElementById('password').value;
         const confirmarContrasena = document.getElementById('confirmarPassword').value;
+        const codigoDocente = document.getElementById('codigoDocente').value.trim();
         const turnos = Array.from(document.querySelectorAll('input[name="turno"]:checked'))
             .map((checkbox) => Number(checkbox.value));
 
@@ -36,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     nombre_usuario: nombreUsuario,
                     contrasena: contrasena,
                     confirmar_contrasena: confirmarContrasena,
-                    turnos: turnos
+                    turnos: turnos,
+                    codigo_docente: codigoDocente
                 })
             });
 
